@@ -2,16 +2,19 @@ import * as THREE from 'three';
 import AvatarObject from "./AvatarObject";
 import {TrackballControls} from 'three/examples/jsm/controls/TrackballControls.js';
 
+const lightDebugOn = false;
+
 export default class AvatarRenderer {
     init(assetsBaseDir = "/assets/") {
         this.assetsBaseDir = assetsBaseDir;
 
         this.scene = new THREE.Scene();
 
-        this.camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-        this.camera.position.z = 1;
+        this.camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 10);
+        this.camera.position.set(0, 0, 1);
+        this.camera.rotation.set(0, 0, 0);
 
-        this.renderer = new THREE.WebGLRenderer({alpha: true});
+        this.renderer = new THREE.WebGLRenderer({alpha: true, antialias: true});
         this.renderer.setSize(window.innerWidth, window.innerHeight);
         this.renderer.setClearColor(0x000000, 0);
         this.renderer.shadowMap.enabled = true;
@@ -47,11 +50,13 @@ export default class AvatarRenderer {
 
         this.light.shadow.mapSize.width = 512;
         this.light.shadow.mapSize.height = 512;
-        this.light.shadow.camera.near = 0.5;
-        this.light.shadow.camera.far = 500;
+        this.light.shadow.camera.near = 0.1;
+        this.light.shadow.camera.far = 10;
 
-        // const helper = new THREE.CameraHelper(this.light.shadow.camera);
-        // this.scene.add(helper);
+        if (lightDebugOn) {
+            const helper = new THREE.CameraHelper(this.light.shadow.camera);
+            this.scene.add(helper);
+        }
     }
 
     spawnAvatarObject() {

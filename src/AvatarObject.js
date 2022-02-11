@@ -6,12 +6,7 @@ import AvatarEyes from "./AvatarEyes";
 export default class AvatarObject {
     constructor() {
         this.sceneGroup = new THREE.Group();
-
-        this.bodyGroup = new THREE.Group();
-        this.sceneGroup.add(this.bodyGroup);
-
-        this.handsGroup = new THREE.Group();
-        this.sceneGroup.add(this.handsGroup);
+        this.sceneGroup.position.set(0, .20, 0);
 
         this.loadedObjects = { };
 
@@ -19,34 +14,34 @@ export default class AvatarObject {
         this.headTopMesh = AvatarPartsModel.headTops["PoloCap"];
         this.eyes = new AvatarEyes("test");
         this.handsMesh = AvatarPartsModel.hands["Hand"];
+        this.clothesMesh = AvatarPartsModel.hands["Tracksuit"];
     }
 
     load(loadingManager, assetsBaseDir) {
-        this.handlePartLoaded("headMesh", null, this.sceneGroup);
-        this.handlePartLoaded("headTopMesh", null, this.sceneGroup);
-        this.handlePartLoaded("eyes", null, this.sceneGroup);
-        this.handlePartLoaded("handLeft", null, this.handsGroup);
-        this.handlePartLoaded("handRight", null, this.handsGroup);
+        this.handlePartLoaded("headMesh", null);
+        this.handlePartLoaded("headTopMesh", null);
+        this.handlePartLoaded("eyes", null);
+        this.handlePartLoaded("handLeft", null);
+        this.handlePartLoaded("handRight", null);
 
         if (this.headMesh) {
             this.headMesh.load(loadingManager, assetsBaseDir, (meshObj) => {
-                this.handlePartLoaded("headMesh", meshObj, this.sceneGroup);
-                this.setPartColors("headMesh", "#ff0000");
+                this.handlePartLoaded("headMesh", meshObj);
+                this.setPartColors("headMesh", "#ff0000", "#ff00ff");
                 meshObj.position.z = .125;
             });
         }
 
         if (this.headTopMesh) {
             this.headTopMesh.load(loadingManager, assetsBaseDir, (meshObj) => {
-                // TODO Position / rotation
-                this.handlePartLoaded("headTopMesh", meshObj, this.sceneGroup);
+                this.handlePartLoaded("headTopMesh", meshObj);
                 this.setPartColors("headTopMesh", "#0000ff");
             });
         }
 
         if (this.eyes) {
             this.eyes.load(loadingManager, assetsBaseDir, (planeObj) => {
-                this.handlePartLoaded("eyes", planeObj, this.sceneGroup);
+                this.handlePartLoaded("eyes", planeObj);
                 planeObj.position.z = .153;
                 planeObj.position.y = .025;
             });
@@ -54,29 +49,36 @@ export default class AvatarObject {
 
         if (this.handsMesh) {
             this.handsMesh.load(loadingManager, assetsBaseDir, (meshObj) => {
-
                 let handLeft = meshObj.clone();
                 handLeft.scale.set(1, 1, 1);
-                handLeft.position.set(-0.333, -.333, .1);
+                handLeft.position.set(-0.25, -.6, .05);
 
                 let handRight = meshObj.clone();
                 handRight.scale.set(-1, 1, 1);
-                handRight.position.set(.333, -.333, .1);
+                handRight.position.set(.25, -.6, .05);
 
-                this.handlePartLoaded("handLeft", handLeft, this.handsGroup);
-                this.handlePartLoaded("handRight", handRight, this.handsGroup);
+                this.handlePartLoaded("handLeft", handLeft);
+                this.handlePartLoaded("handRight", handRight);
                 this.setPartColors("handLeft", "#ff0000");
                 this.setPartColors("handRight", "#ff0000");
             });
         }
+
+        if (this.clothesMesh) {
+            this.clothesMesh.load(loadingManager, assetsBaseDir, (meshObj) => {
+                this.handlePartLoaded("clothesMesh", meshObj);
+                this.setPartColors("clothesMesh", "#00ff00");
+                meshObj.position.set(0, -.25, 0);
+            });
+        }
     }
 
-    handlePartLoaded(key, gameObject, group) {
+    handlePartLoaded(key, gameObject) {
         if (this.loadedObjects[key]) {
-            group.remove(this.loadedObjects[key]);
+            this.sceneGroup.remove(this.loadedObjects[key]);
         }
         if (gameObject) {
-            group.add(gameObject);
+            this.sceneGroup.add(gameObject);
             this.loadedObjects[key] = gameObject;
         }
     }
