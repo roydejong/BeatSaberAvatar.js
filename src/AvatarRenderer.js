@@ -20,6 +20,8 @@ export default class AvatarRenderer {
         document.body.appendChild(this.renderer.domElement);
 
         this.controls = new TrackballControls(this.camera, this.renderer.domElement);
+        this.controls.rotateSpeed = 10;
+        this.controls.noPan = true;
         this.controls.target.set(0, 0, 0);
     }
 
@@ -31,7 +33,6 @@ export default class AvatarRenderer {
 
     update() {
         this.controls.update();
-
         this.light.position.set(this.camera.position.x, this.camera.position.y, this.camera.position.z);
     }
 
@@ -49,8 +50,8 @@ export default class AvatarRenderer {
         this.light.shadow.camera.near = 0.5;
         this.light.shadow.camera.far = 500;
 
-        const helper = new THREE.CameraHelper(this.light.shadow.camera);
-        this.scene.add(helper);
+        // const helper = new THREE.CameraHelper(this.light.shadow.camera);
+        // this.scene.add(helper);
     }
 
     spawnAvatarObject() {
