@@ -1,0 +1,17 @@
+{
+  "name": "beatsaberavatar.js",
+  "version": "1.0.0",
+  "description": "Beat Saber Multiplayer Avatar Renderer",
+  "main": "src/index.js",
+  "scripts": {
+    "build": "webpack",
+    "watch": "webpack --watch"
+  },
+  "dependencies": {
+    "three": "^0.137.5"
+  },
+  "devDependencies": {
+    "webpack": "^5.68.0",
+    "webpack-cli": "^4.9.2"
+  }
+}
