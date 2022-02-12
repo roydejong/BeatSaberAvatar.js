@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>BeatSaberAvatar.js - Demo page</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            border: 0;
+        }
+        html, body, #render-target {
+            width: 100%;
+            min-width: 100%;
+            max-width: 100%;
+            height: 100%;
+            min-height: 100%;
+            max-height: 100%;
+            overflow: hidden;
+        }
+        body {
+            font-size: 16px;
+            font-family: sans-serif;
+            font-weight: bold;
+            padding: 15px;
+            text-align: center;
+            color: #fff;
+            background: #000;
+        }
+        #render-target {
+            border: 6px solid rgb(65, 88, 208);
+            border-radius: 6px;
+            background-image: linear-gradient(43deg, rgb(65, 88, 208) 0%, rgb(200, 80, 192) 46%, rgb(255, 204, 112) 100%);
+            box-shadow: 0 0 3px 3px rgba(0, 0, 0, .1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+    </style>
+</head>
+<body>
+<div id="render-target">Loading...</div>
+<script src="dist/BeatSaberAvatar.js" async defer></script>
+<script>
+    window.addEventListener('load', function () {
+        const renderTarget = document.getElementById('render-target');
+        const renderer = BeatSaberAvatar.setup(renderTarget);
+
+        window.setInterval(() => {
+            // Randomize avatar
+            renderer.setRandomAvatar();
+        }, 500);
+    });
+</script>
+</body>
+</html>
