@@ -25,4 +25,4 @@ jobs:
           branch: gh-pages
           folder: .
           clean: false
-          single-commit: false
+          single-commit: true
