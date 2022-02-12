@@ -62,7 +62,23 @@ let instance = BeatSaberAvatar.setup(renderTarget, avatarData);
 instance.setAvatarData(avatarData);
 ```
 
-If you don't provide avatar data, a random avatar will be presented instead.
+If you don't provide avatar data or pass `null`, a random avatar will be presented instead.
+
+### Advanced options
+You can provide advanced options as the third parameter in the `setup` call:
+
+```js
+let options = {
+    assetsBaseDir: "/static/avatar_assets/"    
+};
+BeatSaberAvatar.setup(renderTarget, avatarData, options);
+```
+
+Here's an overview of the supported options:
+
+| Key             | Default | Description                                                    |
+|-----------------|--------------|----------------------------------------------------------------|
+| `assetsBaseDir` | `assets/`    | Base directory from which model and texture assets are loaded. |
 
 ## License
 

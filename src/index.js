@@ -15,9 +15,10 @@ window.BeatSaberAvatar = class {
      *
      * @param {Element} domElement The DOM element to create the renderer canvas in.
      * @param {BeatSaberAvatarData|AvatarData|null} avatarData The avatar data to present.
+     * @param {object|null} options Extra options object for the renderer.
      * @returns {AvatarRenderer}
      */
-    static setup(domElement, avatarData = null) {
+    static setup(domElement, avatarData = null, options = null) {
         if (!domElement) {
             throw new Error("setup(): first arg must be valid DOM element")
         }
@@ -27,7 +28,7 @@ window.BeatSaberAvatar = class {
 
         // Create and return renderer instance
         let renderInstance = new AvatarRenderer();
-        renderInstance.init(domElement);
+        renderInstance.init(domElement, options);
         renderInstance.setAvatarData(avatarData || null);
         return renderInstance;
     }

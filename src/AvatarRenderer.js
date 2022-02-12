@@ -8,13 +8,18 @@ export default class AvatarRenderer {
     // -----------------------------------------------------------------------------------------------------------------
     // Setup
 
-    init(domElement, assetsBaseDir = "/assets/") {
+    init(domElement, options) {
         if (this.didInit) {
             throw new Error("Already initialized!");
         }
 
+        if (!options) {
+            options = {};
+        }
+
         this.domElement = domElement;
-        this.assetsBaseDir = assetsBaseDir;
+        this.options = options;
+        this.assetsBaseDir = options.assetsBaseDir || "assets/";
 
         // Create scene
         this.scene = new THREE.Scene();
