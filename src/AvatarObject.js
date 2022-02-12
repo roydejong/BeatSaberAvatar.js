@@ -2,6 +2,7 @@ import * as THREE from 'three';
 import AvatarPartMesh from "./AvatarPartMesh";
 import AvatarPartsModel from "./AvatarPartsModel";
 import AvatarData from "./AvatarData";
+import AvatarColor from "./AvatarColor";
 
 export default class AvatarObject {
     constructor() {
@@ -21,18 +22,24 @@ export default class AvatarObject {
          */
         this.skinColor = AvatarPartsModel.tryGetPart("skinColors", avatarData?.skinColorId);
         this.headTopMesh = AvatarPartsModel.tryGetPart("headTops", avatarData?.headTopId);
+        this.headTopPrimaryColor = new AvatarColor("headTopPrimaryColor", avatarData?.headTopPrimaryColor
+            || AvatarColor.getRandomColorValue());
         this.eyes = AvatarPartsModel.tryGetPart("eyes", avatarData?.eyesId);
         this.handsMesh = AvatarPartsModel.tryGetPart("hands", avatarData?.handsId);
         this.clothesMesh = AvatarPartsModel.tryGetPart("clothes", avatarData?.clothesId);
+        this.clothesPrimaryColor = new AvatarColor("clothesPrimaryColor", avatarData?.clothesPrimaryColor
+            || AvatarColor.getRandomColorValue());
 
         if (!this.avatarData) {
             // Store randomized results for use in load callback (mostly for colors)
             this.avatarData = new AvatarData();
             this.avatarData.skinColorId = this.skinColor.color;
             this.avatarData.headTopId = this.headTopMesh?.id || "None";
+            this.avatarData.headTopPrimaryColor = this.headTopPrimaryColor.color;
             this.avatarData.eyesId = this.eyes.id;
             this.avatarData.handsId = this.handsMesh.id;
             this.avatarData.clothesId = this.clothesMesh.id;
+            this.avatarData.clothesPrimaryColor = this.clothesPrimaryColor.color;
         }
     }
 
@@ -57,9 +64,10 @@ export default class AvatarObject {
             this.headTopMesh.load(loadingManager, assetsBaseDir, (meshObj) => {
                 this.handlePartLoaded("headTopMesh", meshObj);
 
-                // TODO Hair primary color
-                // TODO Hair secondary color
-                this.setPartColors("headTopMesh", "#0000ff");
+                if (this.headTopPrimaryColor) {
+                    // TODO Hair secondary color
+                    this.setPartColors("headTopMesh", this.headTopPrimaryColor.color);
+                }
             });
         }
 
@@ -67,7 +75,7 @@ export default class AvatarObject {
             this.eyes.load(loadingManager, assetsBaseDir, (planeObj) => {
                 this.handlePartLoaded("eyes", planeObj);
                 planeObj.position.z = .153;
-                planeObj.position.y = .025;
+                planeObj.position.y = .02;
             });
         }
 
@@ -95,8 +103,13 @@ export default class AvatarObject {
         if (this.clothesMesh) {
             this.clothesMesh.load(loadingManager, assetsBaseDir, (meshObj) => {
                 this.handlePartLoaded("clothesMesh", meshObj);
-                this.setPartColors("clothesMesh", "#00ff00");
                 meshObj.position.set(0, -.25, 0);
+
+                if (this.clothesPrimaryColor) {
+                    // TODO Clothes secondary color
+                    // TODO Clothes tertiary/detail color
+                    this.setPartColors("clothesMesh", this.clothesPrimaryColor.color);
+                }
             });
         }
     }
