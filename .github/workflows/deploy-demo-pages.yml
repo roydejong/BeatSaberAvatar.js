@@ -24,3 +24,5 @@ jobs:
         with:
           branch: gh-pages
           folder: .
+          clean: false
+          single-commit: false
