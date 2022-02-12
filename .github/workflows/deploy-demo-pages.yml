@@ -16,7 +16,8 @@ jobs:
           npm ci
           mkdir dist
           npm run build
-          git add dist/ -f
+          git add --force dist/BeatSaberAvatar.js
+          git status
 
       - name: Deploy to GitHub Pages
         uses: JamesIves/github-pages-deploy-action@v4.2.3
