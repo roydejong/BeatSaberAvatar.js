@@ -10,7 +10,7 @@
             padding: 0;
             border: 0;
         }
-        html, body {
+        html, body, #render-target {
             width: 100%;
             min-width: 100%;
             max-width: 100%;
@@ -26,9 +26,16 @@
             padding: 15px;
             text-align: center;
             color: #fff;
+            background: #000;
         }
-        body {
+        #render-target {
+            border: 6px solid rgb(65, 88, 208);
+            border-radius: 6px;
             background-image: linear-gradient(43deg, rgb(65, 88, 208) 0%, rgb(200, 80, 192) 46%, rgb(255, 204, 112) 100%);
+            box-shadow: 0 0 3px 3px rgba(0, 0, 0, .1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
     </style>
 </head>
