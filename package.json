@@ -7,6 +7,7 @@
   "author": "Roy de Jong <roy@softwarepunt.nl>",
   "scripts": {
     "build": "webpack --config webpack.config.js",
+    "build-demo": "webpack --config webpack.config.demo.js && cp demo.html demo-build/demo.html && cp assets demo-build/assets -r",
     "watch": "webpack --watch --config webpack.config.dev.js"
   },
   "dependencies": {

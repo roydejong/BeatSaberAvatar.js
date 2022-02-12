@@ -14,15 +14,10 @@ jobs:
       - name: Build BeatSaberAvatar.js
         run: |
           npm ci
-          mkdir dist
-          npm run build
-          git add --force dist/BeatSaberAvatar.js
-          git status
+          npm run build-demo
 
       - name: Deploy to GitHub Pages
         uses: JamesIves/github-pages-deploy-action@v4.2.3
         with:
           branch: gh-pages
-          folder: .
-          clean: false
-          single-commit: true
+          folder: demo-build
