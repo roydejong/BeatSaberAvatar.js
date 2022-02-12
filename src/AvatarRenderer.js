@@ -5,13 +5,17 @@ import {TrackballControls} from 'three/examples/jsm/controls/TrackballControls.j
 const lightDebugOn = false;
 
 export default class AvatarRenderer {
-    init(assetsBaseDir = "/assets/") {
+    init(domElement, assetsBaseDir = "/assets/") {
+        if (this.didInit) {
+            throw new Error("Already initialized!");
+        }
+
         this.assetsBaseDir = assetsBaseDir;
 
         this.scene = new THREE.Scene();
 
         this.camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 10);
-        this.camera.position.set(0, 0, 1);
+        this.camera.position.set(0, 0, 1.5);
         this.camera.rotation.set(0, 0, 0);
 
         this.renderer = new THREE.WebGLRenderer({alpha: true, antialias: true});
@@ -20,30 +24,55 @@ export default class AvatarRenderer {
         this.renderer.shadowMap.enabled = true;
         this.renderer.shadowMap.type = THREE.PCFSoftShadowMap;
 
-        document.body.appendChild(this.renderer.domElement);
+        domElement.innerHTML = "";
+        domElement.appendChild(this.renderer.domElement);
 
         this.controls = new TrackballControls(this.camera, this.renderer.domElement);
         this.controls.rotateSpeed = 10;
         this.controls.noPan = true;
         this.controls.target.set(0, 0, 0);
+
+        this._spawnDirectionalLight();
+
+        console.log('[BeatSaberAvatar.js]', 'Created avatar renderer', this.renderer);
+        this.didInit = true;
+
+        this._renderLoop();
     }
 
-    renderLoop() {
-        requestAnimationFrame(this.renderLoop.bind(this));
-        this.update();
-        this.render();
+    setRandomAvatar() {
+        this.setAvatarData(null);
     }
 
-    update() {
+    setAvatarData(avatarData) {
+        console.log('[BeatSaberAvatar.js]', 'Set avatar data:', avatarData || "Random!");
+
+        if (this.avatarObject == null) {
+            this.avatarObject = new AvatarObject();
+            this.scene.add(this.avatarObject.sceneGroup);
+        }
+
+        this.avatarObject.setAvatarData(avatarData);
+        this.avatarObject.load(THREE.DefaultLoadingManager, this.assetsBaseDir);
+    }
+
+    _renderLoop() {
+        requestAnimationFrame(this._renderLoop.bind(this));
+
+        this._update();
+        this._render();
+    }
+
+    _update() {
         this.controls.update();
         this.light.position.set(this.camera.position.x, this.camera.position.y, this.camera.position.z);
     }
 
-    render() {
+    _render() {
         this.renderer.render(this.scene, this.camera);
     }
 
-    spawnDirectionalLight() {
+    _spawnDirectionalLight() {
         this.light = new THREE.DirectionalLight(0xffffff, 1);
         this.light.castShadow = true;
         this.scene.add(this.light);
@@ -57,11 +86,5 @@ export default class AvatarRenderer {
             const helper = new THREE.CameraHelper(this.light.shadow.camera);
             this.scene.add(helper);
         }
-    }
-
-    spawnAvatarObject() {
-        this.avatarObject = new AvatarObject();
-        this.avatarObject.load(THREE.DefaultLoadingManager, this.assetsBaseDir);
-        this.scene.add(this.avatarObject.sceneGroup);
     }
 }

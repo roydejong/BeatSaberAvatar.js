@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/bsavatar.three.js.iml" filepath="$PROJECT_DIR$/.idea/bsavatar.three.js.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/BeatSaberAvatar.js.iml" filepath="$PROJECT_DIR$/.idea/BeatSaberAvatar.js.iml" />
     </modules>
   </component>
 </project>

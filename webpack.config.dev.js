@@ -1,7 +1,10 @@
 const path = require('path');
 
 module.exports = {
-    mode: "production",
+    mode: "development",
+    watchOptions: {
+        poll: true
+    },
     output: {
         filename: "BeatSaberAvatar.js"
     }

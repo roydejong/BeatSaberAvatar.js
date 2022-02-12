@@ -6,15 +6,18 @@ import AvatarEyes from "./AvatarEyes";
 export default class AvatarObject {
     constructor() {
         this.sceneGroup = new THREE.Group();
-        this.sceneGroup.position.set(0, .20, 0);
+        this.sceneGroup.position.set(0, .15, 0);
 
         this.loadedObjects = { };
 
         this.headMesh = new AvatarPartMesh("head", "AvatarHead.obj");
-        this.headTopMesh = AvatarPartsModel.headTops["PoloCap"];
-        this.eyes = new AvatarEyes("test");
-        this.handsMesh = AvatarPartsModel.hands["Hand"];
-        this.clothesMesh = AvatarPartsModel.hands["Tracksuit"];
+    }
+
+    setAvatarData(avatarData) {
+        this.headTopMesh = AvatarPartsModel.tryGetPart("headTops", avatarData?.headTopId);
+        this.eyes = new AvatarEyes(avatarData?.eye);
+        this.handsMesh = AvatarPartsModel.hands[avatarData?.handsId || "BareHands"];
+        this.clothesMesh = AvatarPartsModel.tryGetPart("clothes", avatarData?.clothesId);
     }
 
     load(loadingManager, assetsBaseDir) {
@@ -103,9 +106,5 @@ export default class AvatarObject {
                 }
             }
         });
-    }
-
-    setAvatarData(avatarData) {
-        // TODO
     }
 }

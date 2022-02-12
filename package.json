@@ -3,9 +3,11 @@
   "version": "1.0.0",
   "description": "Beat Saber Multiplayer Avatar Renderer",
   "main": "src/index.js",
+  "license": "MIT",
+  "author": "Roy de Jong <roy@softwarepunt.nl>",
   "scripts": {
-    "build": "webpack",
-    "watch": "webpack --watch"
+    "build": "webpack --config webpack.config.js",
+    "watch": "webpack --watch --config webpack.config.dev.js"
   },
   "dependencies": {
     "three": "^0.137.5"

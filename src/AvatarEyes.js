@@ -38,7 +38,7 @@ export default class AvatarEyes {
         try {
             const loader = new THREE.TextureLoader(loadingManager);
             loader.load(assetsBaseDir + TextureAtlasPath, (texture) => {
-                console.info('[AvatarEyes]', 'Loaded shared texture:', TextureAtlasPath, texture);
+                console.debug('[AvatarEyes]', 'Loaded shared texture:', TextureAtlasPath, texture);
                 AvatarEyes.sharedTexture = texture;
                 callback(texture);
             });

@@ -15,7 +15,7 @@ export default class AvatarPartMesh {
             }
             const loader = new OBJLoader(loadingManager);
             loader.load(assetsBaseDir + this.meshPath, (obj) => {
-                console.info('[AvatarPartMesh]', 'Loaded obj:', this.meshPath, obj);
+                console.debug('[AvatarPartMesh]', 'Loaded obj:', this.meshPath, obj);
                 this.loadedObj = obj;
                 callback(obj);
             });
