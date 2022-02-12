@@ -1,49 +1,41 @@
 import * as THREE from 'three';
 
-const TextureAtlasPath = "Eyes/AvatarEyes.png";
-
 export default class AvatarEyes {
     constructor(id) {
         this.id = id;
+        this.texturePath = `Eyes/${id}.png`
     }
 
     load(loadingManager, assetsBaseDir, callback) {
-        this.loadSharedTexture(loadingManager, assetsBaseDir, (texture) => {
-            texture.offset.set(0, .25); // TODO eye-to-offset mapping
-
-            const planeWidth = .25;
+        this.loadTexture(loadingManager, assetsBaseDir, (texture) => {
+            const planeWidth = .3;
             const planeHeight = .15;
-
             const geometry = new THREE.PlaneGeometry(planeWidth, planeHeight);
-            texture.repeat.set(planeWidth, planeHeight);
             const material = new THREE.MeshBasicMaterial({
                 color: 0xffffff,
                 map: texture,
                 side: THREE.FrontSide,
                 transparent: true
             });
-            const plane = new THREE.Mesh(geometry, material);
-
-            // TODO Sprite atlas slice
-            callback(plane);
+            callback(new THREE.Mesh(geometry, material));
         });
     }
 
-    loadSharedTexture(loadingManager, assetsBaseDir, callback) {
-        if (AvatarEyes.sharedTexture) {
-            callback(AvatarEyes.sharedTexture);
+    loadTexture(loadingManager, assetsBaseDir, callback) {
+        if (this.loadedTexture) {
+            callback(this.loadedTexture);
             return;
         }
 
         try {
             const loader = new THREE.TextureLoader(loadingManager);
-            loader.load(assetsBaseDir + TextureAtlasPath, (texture) => {
-                console.debug('[AvatarEyes]', 'Loaded shared texture:', TextureAtlasPath, texture);
-                AvatarEyes.sharedTexture = texture;
+            loader.load(assetsBaseDir + this.texturePath, (texture) => {
+                console.debug('[AvatarEyes]', 'Loaded texture:', this.texturePath, texture);
+                this.loadedTexture = texture;
                 callback(texture);
             });
         } catch (e) {
-            console.error('[AvatarEyes]', 'Load error:', e);
+            console.error('[AvatarEyes]', 'Texture load error:', e);
             callback(null);
         }
     }

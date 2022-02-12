@@ -1,7 +1,6 @@
 import * as THREE from 'three';
 import AvatarPartMesh from "./AvatarPartMesh";
 import AvatarPartsModel from "./AvatarPartsModel";
-import AvatarEyes from "./AvatarEyes";
 import AvatarData from "./AvatarData";
 
 export default class AvatarObject {
@@ -22,7 +21,7 @@ export default class AvatarObject {
          */
         this.skinColor = AvatarPartsModel.tryGetPart("skinColors", avatarData?.skinColorId);
         this.headTopMesh = AvatarPartsModel.tryGetPart("headTops", avatarData?.headTopId);
-        this.eyes = new AvatarEyes(avatarData?.eye); // TODO Eye part collection + mapping
+        this.eyes = AvatarPartsModel.tryGetPart("eyes", avatarData?.eyesId);
         this.handsMesh = AvatarPartsModel.tryGetPart("hands", avatarData?.handsId);
         this.clothesMesh = AvatarPartsModel.tryGetPart("clothes", avatarData?.clothesId);
 
