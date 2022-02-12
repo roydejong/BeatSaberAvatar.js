@@ -20,6 +20,10 @@ export default class AvatarPartsModel {
         }
 
         if (preferredPart) {
+            if (preferredPart === "None") {
+                return null;
+            }
+
             if (typeof this[collectionName][preferredPart] !== "undefined") {
                 return this[collectionName][preferredPart];
             }
@@ -42,21 +46,22 @@ export default class AvatarPartsModel {
 
     static registerHeadTops() {
         const headTopIds = ["BedHead", "Bob", "DoubleTrouble", "Emo", "HalfShaved", "Heartbreak", "Hippie", "LongBangs",
-            "Loose", "Magician", "Nanny", "Normie", "OnFire", "PoloCap", "PonyTail", "Punk", "Scifi", "Sultan",
+            "Loose", "Magician", "Nanny", "Normie", "OnFire", "PoloCap", "Ponytail", "Punk", "Scifi", "Sultan",
             "SweatBand", "Untidy", "WetHair", "WindSwept", "WinterHat", "Wizard"];
 
         headTopIds.forEach(headTopId => {
             this.headTops[headTopId] = new AvatarPartMesh(headTopId, `HeadTop/${headTopId}_01.obj`);
         });
+
+        this.headTops["None"] = null;
     }
 
     static registerHands() {
         this.hands["BareHands"] = new AvatarPartMesh("BareHands", "Hands/MeshHand01.obj");
-        this.hands["HandGloves"] = new AvatarPartMesh("HandGloves", "Hands/MeshHandGloves01_v02.obj");
+        this.hands["Fingerless"] = new AvatarPartMesh("Fingerless", "Hands/MeshHandGloves01_v02.obj");
     }
 
     static registerClothes() {
-        // TODO Verify what these are actually called internally because the mesh names are all over the place
         this.clothes["Basket"] = new AvatarPartMesh("Basket", "Clothes/MeshBasket02_v04.obj");
         this.clothes["Dress"] = new AvatarPartMesh("Dress", "Clothes/MeshDress01_v07.obj");
         this.clothes["Hoodie"] = new AvatarPartMesh("Hoodie", "Clothes/MeshHoody01_v02.obj");

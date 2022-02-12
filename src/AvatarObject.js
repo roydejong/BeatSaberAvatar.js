@@ -2,6 +2,7 @@ import * as THREE from 'three';
 import AvatarPartMesh from "./AvatarPartMesh";
 import AvatarPartsModel from "./AvatarPartsModel";
 import AvatarEyes from "./AvatarEyes";
+import AvatarData from "./AvatarData";
 
 export default class AvatarObject {
     constructor() {
@@ -14,10 +15,21 @@ export default class AvatarObject {
     }
 
     setAvatarData(avatarData) {
+        this.avatarData = avatarData;
+
         this.headTopMesh = AvatarPartsModel.tryGetPart("headTops", avatarData?.headTopId);
         this.eyes = new AvatarEyes(avatarData?.eye);
-        this.handsMesh = AvatarPartsModel.hands[avatarData?.handsId || "BareHands"];
+        this.handsMesh = AvatarPartsModel.tryGetPart("hands", avatarData?.handsId);
         this.clothesMesh = AvatarPartsModel.tryGetPart("clothes", avatarData?.clothesId);
+
+        if (!this.avatarData) {
+            // Store randomized results for use in load callback (mostly for colors)
+            this.avatarData = new AvatarData();
+            this.avatarData.headTopId = this.headTopMesh?.id || "None";
+            this.avatarData.eyesId = this.eyes.id;
+            this.avatarData.handsId = this.handsMesh.id;
+            this.avatarData.clothesId = this.clothesMesh.id;
+        }
     }
 
     load(loadingManager, assetsBaseDir) {
