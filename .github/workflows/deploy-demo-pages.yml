@@ -14,7 +14,9 @@ jobs:
       - name: Build BeatSaberAvatar.js
         run: |
           npm ci
+          mkdir dist
           npm run build
+          git add dist/
 
       - name: Deploy to GitHub Pages
         uses: JamesIves/github-pages-deploy-action@v4.2.3
