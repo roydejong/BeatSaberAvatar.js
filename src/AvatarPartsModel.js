@@ -1,4 +1,5 @@
 import AvatarPartMesh from "./AvatarPartMesh";
+import AvatarColor from "./AvatarColor";
 
 export default class AvatarPartsModel {
     static init() {
@@ -7,10 +8,16 @@ export default class AvatarPartsModel {
 
         this.headTops = {};
         this.registerHeadTops();
+
         this.hands = {};
         this.registerHands();
+
         this.clothes = {};
         this.registerClothes();
+
+        this.skinColors = {};
+        this.registerSkinColors();
+
         this.didInit = true;
     }
 
@@ -70,5 +77,18 @@ export default class AvatarPartsModel {
         this.clothes["Rock"] = new AvatarPartMesh("Rock", "Clothes/MeshRockMale02_v03.obj");
         this.clothes["Tracksuit"] = new AvatarPartMesh("Tracksuit", "Clothes/MeshTrasksuit01_v02.obj");
         this.clothes["Vest"] = new AvatarPartMesh("Vest", "Clothes/MeshVest02_v03.obj");
+    }
+
+    static registerSkinColors() {
+        this.skinColors["Default"] = new AvatarColor("Default", "#E5A9A9");
+        this.skinColors["Light"] = new AvatarColor("Light", "#EBD6C7");
+        this.skinColors["Mid"] = new AvatarColor("Mid", "#D9B9A3");
+        this.skinColors["Brown"] = new AvatarColor("Brown", "#806753");
+        this.skinColors["DarkBrown"] = new AvatarColor("DarkBrown", "#593D2D");
+        this.skinColors["Black"] = new AvatarColor("Black", "#402A21");
+        this.skinColors["Alien"] = new AvatarColor("Alien", "#2FBC2F");
+        this.skinColors["Smurf"] = new AvatarColor("Smurf", "#1A8AE0");
+        this.skinColors["Zombie"] = new AvatarColor("Zombie", "#FFFFFF");
+        this.skinColors["Purple"] = new AvatarColor("Purple", "#AB36A7");
     }
 }

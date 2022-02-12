@@ -17,14 +17,19 @@ export default class AvatarObject {
     setAvatarData(avatarData) {
         this.avatarData = avatarData;
 
+        /**
+         * @type {AvatarColor}
+         */
+        this.skinColor = AvatarPartsModel.tryGetPart("skinColors", avatarData?.skinColorId);
         this.headTopMesh = AvatarPartsModel.tryGetPart("headTops", avatarData?.headTopId);
-        this.eyes = new AvatarEyes(avatarData?.eye);
+        this.eyes = new AvatarEyes(avatarData?.eye); // TODO Eye part collection + mapping
         this.handsMesh = AvatarPartsModel.tryGetPart("hands", avatarData?.handsId);
         this.clothesMesh = AvatarPartsModel.tryGetPart("clothes", avatarData?.clothesId);
 
         if (!this.avatarData) {
             // Store randomized results for use in load callback (mostly for colors)
             this.avatarData = new AvatarData();
+            this.avatarData.skinColorId = this.skinColor.color;
             this.avatarData.headTopId = this.headTopMesh?.id || "None";
             this.avatarData.eyesId = this.eyes.id;
             this.avatarData.handsId = this.handsMesh.id;
@@ -42,7 +47,9 @@ export default class AvatarObject {
         if (this.headMesh) {
             this.headMesh.load(loadingManager, assetsBaseDir, (meshObj) => {
                 this.handlePartLoaded("headMesh", meshObj);
-                this.setPartColors("headMesh", "#ff0000", "#ff00ff");
+                if (this.skinColor) {
+                    this.setPartColors("headMesh", this.skinColor.color);
+                }
                 meshObj.position.z = .125;
             });
         }
@@ -50,6 +57,9 @@ export default class AvatarObject {
         if (this.headTopMesh) {
             this.headTopMesh.load(loadingManager, assetsBaseDir, (meshObj) => {
                 this.handlePartLoaded("headTopMesh", meshObj);
+
+                // TODO Hair primary color
+                // TODO Hair secondary color
                 this.setPartColors("headTopMesh", "#0000ff");
             });
         }
@@ -74,8 +84,12 @@ export default class AvatarObject {
 
                 this.handlePartLoaded("handLeft", handLeft);
                 this.handlePartLoaded("handRight", handRight);
-                this.setPartColors("handLeft", "#ff0000");
-                this.setPartColors("handRight", "#ff0000");
+
+                if (this.skinColor) {
+                    // TODO Fingerless secondary color (handColor)
+                    this.setPartColors("handLeft", this.skinColor.color);
+                    this.setPartColors("handRight", this.skinColor.color);
+                }
             });
         }
 
@@ -110,6 +124,7 @@ export default class AvatarObject {
 
         obj.traverse(function (childObj) {
             if (childObj instanceof THREE.Mesh) {
+                // TODO Tweak material
                 childObj.material.color.set(primaryColor);
 
                 if (childObj.name === "FacialHair") {
