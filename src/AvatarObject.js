@@ -108,8 +108,7 @@ export default class AvatarObject {
         if (this.eyes) {
             this.eyes.load(loadingManager, assetsBaseDir, (planeObj) => {
                 this.handlePartLoaded("eyes", planeObj);
-                planeObj.position.z = .153;
-                planeObj.position.y = .02;
+                planeObj.position.set(0, 0, .153);
             });
         }
 
