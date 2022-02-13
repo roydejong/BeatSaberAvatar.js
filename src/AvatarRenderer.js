@@ -18,8 +18,7 @@ export default class AvatarRenderer {
         }
 
         this.domElement = domElement;
-        this.options = options;
-        this.assetsBaseDir = options.assetsBaseDir || "assets/";
+        this.options = Object.assign({ }, AvatarRenderer.defaultOptions, options);
 
         // Create scene
         this.scene = new THREE.Scene();
@@ -39,10 +38,12 @@ export default class AvatarRenderer {
         domElement.appendChild(this.renderer.domElement);
 
         // Set up mouse/keyboard controls
-        this.controls = new TrackballControls(this.camera, this.renderer.domElement);
-        this.controls.rotateSpeed = 10;
-        this.controls.noPan = true;
-        this.controls.target.set(0, 0, 0);
+        if (this.options.enableControls) {
+            this.controls = new TrackballControls(this.camera, this.renderer.domElement);
+            this.controls.rotateSpeed = 10;
+            this.controls.noPan = true;
+            this.controls.target.set(0, 0, 0);
+        }
 
         // Start render loop
         this._spawnDirectionalLight();
@@ -99,8 +100,32 @@ export default class AvatarRenderer {
     }
 
     _update() {
-        this.controls.update();
+        if (this.controls) {
+            this.controls.update();
+        }
+
         this.light.position.set(this.camera.position.x, this.camera.position.y, this.camera.position.z);
+
+        if (this.avatarObject) {
+            if (this.options.rotateAnimation) {
+                const swingSpeed = .0025;
+                const swingLimit = .5;
+
+                if (this.rotateBack) {
+                    this.avatarObject.sceneGroup.rotation.y -= swingSpeed;
+
+                    if (this.avatarObject.sceneGroup.rotation.y <= -swingLimit) {
+                        this.rotateBack = false;
+                    }
+                } else {
+                    this.avatarObject.sceneGroup.rotation.y += swingSpeed;
+
+                    if (this.avatarObject.sceneGroup.rotation.y >= swingLimit) {
+                        this.rotateBack = true;
+                    }
+                }
+            }
+        }
     }
 
     _render() {
@@ -123,6 +148,12 @@ export default class AvatarRenderer {
         }
 
         this.avatarObject.setAvatarData(avatarData);
-        this.avatarObject.load(THREE.DefaultLoadingManager, this.assetsBaseDir);
+        this.avatarObject.load(THREE.DefaultLoadingManager, this.options.assetsBaseDir);
     }
 }
+
+AvatarRenderer.defaultOptions = {
+    assetsBaseDir: "assets/",
+    enableControls: true,
+    rotateAnimation: true,
+};
