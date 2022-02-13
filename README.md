@@ -81,8 +81,10 @@ If you don't provide avatar data or pass `null`, a random avatar will be present
 You can provide advanced options as the third parameter in the `setup` call:
 
 ```js
-let options = {
-    assetsBaseDir: "/static/avatar_assets/"
+const options = {
+    assetsBaseDir: "/static/avatar_assets/",
+    enableControls: false,
+    rotateAnimation: true
 };
 BeatSaberAvatar.setup(renderTarget, avatarData, options);
 ```
@@ -93,7 +95,7 @@ Here's an overview of the supported options:
 |--------------------|-----------|----------------------------------------------------------------|
 | `assetsBaseDir`    | `assets/` | Base directory from which model and texture assets are loaded. |
 | `enableControls`   | `true`    | Enable mouse / keyboard controls for the camera.               |
-| `rotateAnimation`  | `true`    | If true, the avatar will animate left-to-right.                |
+| `rotateAnimation`  | `true`    | If true, the avatar will slowly rotate from side to side.      |
 | `enableGlasses`    | `false`   | If true, render glasses from avatar data (unused assets).      |
 | `enableFacialHair` | `false`   | If true, render facial hair from avatar data (unused assets).  |
 

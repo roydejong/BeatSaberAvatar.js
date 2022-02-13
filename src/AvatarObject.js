@@ -81,8 +81,8 @@ export default class AvatarObject {
         this.handlePartLoaded("eyes", null);
         this.handlePartLoaded("handLeft", null);
         this.handlePartLoaded("handRight", null);
-        this.handlePartLoaded("glasses", null);
-        this.handlePartLoaded("facialHair", null);
+        this.handlePartLoaded("glassesMesh", null);
+        this.handlePartLoaded("facialHairMesh", null);
 
         if (this.headMesh) {
             this.headMesh.load(loadingManager, assetsBaseDir, (meshObj) => {
