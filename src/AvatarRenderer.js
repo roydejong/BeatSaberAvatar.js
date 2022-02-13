@@ -48,7 +48,7 @@ export default class AvatarRenderer {
         // Start render loop
         this._spawnDirectionalLight();
 
-        console.log('[BeatSaberAvatar.js]', 'Created avatar renderer', this.renderer);
+        console.log('[BeatSaberAvatar.js]', 'Created avatar renderer', this.renderer, this.options);
         this.didInit = true;
 
         this._renderLoop();
@@ -147,7 +147,7 @@ export default class AvatarRenderer {
             this.scene.add(this.avatarObject.sceneGroup);
         }
 
-        this.avatarObject.setAvatarData(avatarData);
+        this.avatarObject.setAvatarData(avatarData, this.options.enableGlasses, this.options.enableFacialHair);
         this.avatarObject.load(THREE.DefaultLoadingManager, this.options.assetsBaseDir);
     }
 }
@@ -156,4 +156,6 @@ AvatarRenderer.defaultOptions = {
     assetsBaseDir: "assets/",
     enableControls: true,
     rotateAnimation: true,
+    enableGlasses: false,
+    enableFacialHair: false
 };

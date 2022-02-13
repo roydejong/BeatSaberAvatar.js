@@ -45,7 +45,14 @@
 <script>
     window.addEventListener('load', function () {
         const renderTarget = document.getElementById('render-target');
-        const renderer = BeatSaberAvatar.setup(renderTarget);
+
+        const renderer = BeatSaberAvatar.setup(renderTarget, null, {
+            assetsBaseDir: "assets/",
+            enableControls: true,
+            rotateAnimation: true,
+            enableGlasses: false,
+            enableFacialHair: false
+        });
 
         window.setInterval(() => {
             // Randomize avatar

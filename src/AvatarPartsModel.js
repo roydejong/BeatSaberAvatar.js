@@ -22,6 +22,12 @@ export default class AvatarPartsModel {
         this.clothes = {};
         this.registerClothes();
 
+        this.glasses = {};
+        this.registerGlasses();
+
+        this.facialHair = {};
+        this.registerFacialHair();
+
         this.didInit = true;
     }
 
@@ -101,5 +107,18 @@ export default class AvatarPartsModel {
         this.clothes["Rock"] = new AvatarPartMesh("Rock", "Clothes/MeshRockMale02_v03.obj");
         this.clothes["Tracksuit"] = new AvatarPartMesh("Tracksuit", "Clothes/MeshTrasksuit01_v02.obj");
         this.clothes["Vest"] = new AvatarPartMesh("Vest", "Clothes/MeshVest02_v03.obj");
+    }
+
+    static registerGlasses() {
+        this.glasses["None"] = null;
+        this.glasses["Glasses01"] = new AvatarPartMesh("Glasses01", "Glasses/MesGlasses01.001.obj");
+        this.glasses["Glasses02"] = new AvatarPartMesh("Glasses02", "Glasses/MeshSunglasses01.001.obj");
+    }
+
+    static registerFacialHair() {
+        this.facialHair["None"] = null;
+        this.facialHair["Beard01"] = new AvatarPartMesh("Beard01", "FacialHair/MeshBeard01.obj");
+        this.facialHair["Moustache01"] = new AvatarPartMesh("Moustache01", "FacialHair/MeshMoustache01.obj");
+        this.facialHair["Moustache02"] = new AvatarPartMesh("Moustache02", "FacialHair/MeshMoustache02.obj");
     }
 }

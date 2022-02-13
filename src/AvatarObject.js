@@ -14,21 +14,45 @@ export default class AvatarObject {
         this.headMesh = new AvatarPartMesh("head", "AvatarHead.obj");
     }
 
-    setAvatarData(avatarData) {
+    setAvatarData(avatarData, enableGlasses = false, enableFacialHair = false) {
         this.avatarData = avatarData;
 
         /**
          * @type {AvatarColor}
          */
         this.skinColor = AvatarPartsModel.tryGetPart("skinColors", avatarData?.skinColorId);
+
         this.headTopMesh = AvatarPartsModel.tryGetPart("headTops", avatarData?.headTopId);
         this.headTopPrimaryColor = new AvatarColor("headTopPrimaryColor", avatarData?.headTopPrimaryColor
             || AvatarColor.getRandomColorValue());
+
         this.eyes = AvatarPartsModel.tryGetPart("eyes", avatarData?.eyesId);
+
         this.handsMesh = AvatarPartsModel.tryGetPart("hands", avatarData?.handsId);
+        this.handsColor = new AvatarColor("handsColor", avatarData?.handsColor
+            || AvatarColor.getRandomColorValue());
+
         this.clothesMesh = AvatarPartsModel.tryGetPart("clothes", avatarData?.clothesId);
         this.clothesPrimaryColor = new AvatarColor("clothesPrimaryColor", avatarData?.clothesPrimaryColor
             || AvatarColor.getRandomColorValue());
+
+        if (enableGlasses) {
+            this.glassesMesh = AvatarPartsModel.tryGetPart("glasses", avatarData?.glassesId);
+            this.glassesColor = new AvatarColor("glassesColor", avatarData?.glassesColor
+                || AvatarColor.getRandomColorValue());
+        } else {
+            this.glassesMesh = null;
+            this.glassesColor = null;
+        }
+
+        if (enableFacialHair) {
+            this.facialHairMesh = AvatarPartsModel.tryGetPart("facialHair", avatarData?.facialHairId);
+            this.facialHairColor = new AvatarColor("facialHairColor", avatarData?.facialHairColor
+                || AvatarColor.getRandomColorValue());
+        } else {
+            this.facialHairMesh = null;
+            this.facialHairColor = null;
+        }
 
         if (!this.avatarData) {
             // Store randomized results for use in load callback (mostly for colors)
@@ -40,6 +64,14 @@ export default class AvatarObject {
             this.avatarData.handsId = this.handsMesh.id;
             this.avatarData.clothesId = this.clothesMesh.id;
             this.avatarData.clothesPrimaryColor = this.clothesPrimaryColor.color;
+            if (enableGlasses) {
+                this.avatarData.glassesId = this.glassesMesh?.id || "None";
+                this.avatarData.glassesColor = this.glassesColor.color;
+            }
+            if (enableFacialHair) {
+                this.avatarData.facialHairId = this.facialHairMesh?.id || "None";
+                this.avatarData.facialHairColor = this.facialHairColor.color;
+            }
         }
     }
 
@@ -49,6 +81,8 @@ export default class AvatarObject {
         this.handlePartLoaded("eyes", null);
         this.handlePartLoaded("handLeft", null);
         this.handlePartLoaded("handRight", null);
+        this.handlePartLoaded("glasses", null);
+        this.handlePartLoaded("facialHair", null);
 
         if (this.headMesh) {
             this.headMesh.load(loadingManager, assetsBaseDir, (meshObj) => {
@@ -112,6 +146,28 @@ export default class AvatarObject {
                 }
             });
         }
+
+        if (this.glassesMesh) {
+            this.glassesMesh.load(loadingManager, assetsBaseDir, (meshObj) => {
+                this.handlePartLoaded("glassesMesh", meshObj);
+                meshObj.position.set(0, 0, 0);
+
+                if (this.glassesColor) {
+                    this.setPartColors("glassesMesh", this.glassesColor.color);
+                }
+            });
+        }
+
+        if (this.facialHairMesh) {
+            this.facialHairMesh.load(loadingManager, assetsBaseDir, (meshObj) => {
+                this.handlePartLoaded("facialHairMesh", meshObj);
+                meshObj.position.set(0, 0, 0); // this actually lines up with the built-in beard on the head model
+
+                if (this.facialHairColor) {
+                    this.setPartColors("facialHairMesh", this.facialHairColor.color);
+                }
+            });
+        }
     }
 
     handlePartLoaded(key, gameObject) {
@@ -140,7 +196,7 @@ export default class AvatarObject {
                 childObj.material.color.set(primaryColor);
 
                 if (childObj.name === "FacialHair") {
-                    // Goatee removal from avatar head (maybe for future use?)
+                    // Baked-in beard removal from avatar head
                     childObj.visible = false;
                 }
             }

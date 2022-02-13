@@ -94,6 +94,8 @@ Here's an overview of the supported options:
 | `assetsBaseDir`    | `assets/` | Base directory from which model and texture assets are loaded. |
 | `enableControls`   | `true`    | Enable mouse / keyboard controls for the camera.               |
 | `rotateAnimation`  | `true`    | If true, the avatar will animate left-to-right.                |
+| `enableGlasses`    | `false`   | If true, render glasses from avatar data (unused assets).      |
+| `enableFacialHair` | `false`   | If true, render facial hair from avatar data (unused assets).  |
 
 ## License
 

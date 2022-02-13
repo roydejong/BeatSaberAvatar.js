@@ -15,5 +15,11 @@ export default class AvatarData {
 
         this.handsId = null;
         this.handsColor = null;
+
+        this.glassesId = null;
+        this.glassesColor = null;
+
+        this.facialHairId = null;
+        this.facialHairColor = null;
     }
 }
