@@ -1,7 +1,9 @@
+import * as THREE from 'three';
+
 export default class AvatarColor {
     constructor(id, color) {
         this.id = id;
-        this.color = color;
+        this.color = new THREE.Color(color);
     }
 
     static getRandomColorValue() {

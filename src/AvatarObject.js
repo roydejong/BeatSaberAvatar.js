@@ -1,8 +1,8 @@
 import * as THREE from 'three';
 import AvatarPartMesh from "./AvatarPartMesh";
 import AvatarPartsModel from "./AvatarPartsModel";
-import AvatarData from "./AvatarData";
 import AvatarColor from "./AvatarColor";
+import AvatarTextureBaker from "./AvatarTextureBaker";
 
 export default class AvatarObject {
     constructor() {
@@ -25,6 +25,8 @@ export default class AvatarObject {
         this.headTopMesh = AvatarPartsModel.tryGetPart("headTops", avatarData?.headTopId);
         this.headTopPrimaryColor = new AvatarColor("headTopPrimaryColor", avatarData?.headTopPrimaryColor
             || AvatarColor.getRandomColorValue());
+        this.headTopSecondaryColor = new AvatarColor("headTopSecondaryColor", avatarData?.headTopSecondaryColor
+            || AvatarColor.getRandomColorValue());
 
         this.eyes = AvatarPartsModel.tryGetPart("eyes", avatarData?.eyesId);
 
@@ -34,6 +36,10 @@ export default class AvatarObject {
 
         this.clothesMesh = AvatarPartsModel.tryGetPart("clothes", avatarData?.clothesId);
         this.clothesPrimaryColor = new AvatarColor("clothesPrimaryColor", avatarData?.clothesPrimaryColor
+            || AvatarColor.getRandomColorValue());
+        this.clothesSecondaryColor = new AvatarColor("clothesSecondaryColor", avatarData?.clothesSecondaryColor
+            || AvatarColor.getRandomColorValue());
+        this.clothesDetailColor = new AvatarColor("clothesDetailColor", avatarData?.clothesDetailColor
             || AvatarColor.getRandomColorValue());
 
         if (enableGlasses) {
@@ -53,26 +59,6 @@ export default class AvatarObject {
             this.facialHairMesh = null;
             this.facialHairColor = null;
         }
-
-        if (!this.avatarData) {
-            // Store randomized results for use in load callback (mostly for colors)
-            this.avatarData = new AvatarData();
-            this.avatarData.skinColorId = this.skinColor.color;
-            this.avatarData.headTopId = this.headTopMesh?.id || "None";
-            this.avatarData.headTopPrimaryColor = this.headTopPrimaryColor.color;
-            this.avatarData.eyesId = this.eyes.id;
-            this.avatarData.handsId = this.handsMesh.id;
-            this.avatarData.clothesId = this.clothesMesh.id;
-            this.avatarData.clothesPrimaryColor = this.clothesPrimaryColor.color;
-            if (enableGlasses) {
-                this.avatarData.glassesId = this.glassesMesh?.id || "None";
-                this.avatarData.glassesColor = this.glassesColor.color;
-            }
-            if (enableFacialHair) {
-                this.avatarData.facialHairId = this.facialHairMesh?.id || "None";
-                this.avatarData.facialHairColor = this.facialHairColor.color;
-            }
-        }
     }
 
     load(loadingManager, assetsBaseDir) {
@@ -91,7 +77,7 @@ export default class AvatarObject {
                     this.setPartColors("headMesh", this.skinColor.color);
                 }
                 meshObj.position.z = .125;
-            });
+            }, false);
         }
 
         if (this.headTopMesh) {
@@ -99,8 +85,8 @@ export default class AvatarObject {
                 this.handlePartLoaded("headTopMesh", meshObj);
 
                 if (this.headTopPrimaryColor) {
-                    // TODO Hair secondary color
-                    this.setPartColors("headTopMesh", this.headTopPrimaryColor.color);
+                    this.setPartColors("headTopMesh", this.headTopPrimaryColor.color,
+                        this.headTopSecondaryColor.color);
                 }
             });
         }
@@ -126,9 +112,8 @@ export default class AvatarObject {
                 this.handlePartLoaded("handRight", handRight);
 
                 if (this.skinColor) {
-                    // TODO Fingerless secondary color (handColor)
-                    this.setPartColors("handLeft", this.skinColor.color);
-                    this.setPartColors("handRight", this.skinColor.color);
+                    this.setPartColors("handLeft", this.skinColor.color, this.handsColor.color);
+                    this.setPartColors("handRight", this.skinColor.color, this.handsColor.color);
                 }
             });
         }
@@ -139,9 +124,8 @@ export default class AvatarObject {
                 meshObj.position.set(0, -.25, 0);
 
                 if (this.clothesPrimaryColor) {
-                    // TODO Clothes secondary color
-                    // TODO Clothes tertiary/detail color
-                    this.setPartColors("clothesMesh", this.clothesPrimaryColor.color);
+                    this.setPartColors("clothesMesh", this.clothesPrimaryColor.color,
+                        this.clothesSecondaryColor.color, this.clothesDetailColor.color);
                 }
             });
         }
@@ -149,7 +133,6 @@ export default class AvatarObject {
         if (this.glassesMesh) {
             this.glassesMesh.load(loadingManager, assetsBaseDir, (meshObj) => {
                 this.handlePartLoaded("glassesMesh", meshObj);
-                meshObj.position.set(0, 0, 0);
 
                 if (this.glassesColor) {
                     this.setPartColors("glassesMesh", this.glassesColor.color);
@@ -160,7 +143,6 @@ export default class AvatarObject {
         if (this.facialHairMesh) {
             this.facialHairMesh.load(loadingManager, assetsBaseDir, (meshObj) => {
                 this.handlePartLoaded("facialHairMesh", meshObj);
-                meshObj.position.set(0, 0, 0); // this actually lines up with the built-in beard on the head model
 
                 if (this.facialHairColor) {
                     this.setPartColors("facialHairMesh", this.facialHairColor.color);
@@ -179,25 +161,36 @@ export default class AvatarObject {
         }
     }
 
-    setPartColors(key, primaryColor = null, secondaryColor = null, tertiaryColor = null) {
+    setPartColors(key, primaryColor = null, secondaryColor = null, detailColor = null) {
         let obj = this.loadedObjects[key];
 
         if (!obj) {
             return;
         }
 
-        // This is just temporary...
-        // TODO Proper color-to-UV mapping for parts
+        const needsBake = primaryColor && (secondaryColor || detailColor);
+
+        let preferredMaterial = null;
+        if (needsBake) {
+            // Bake texture for UV wrapping with multi colors
+            const bakedTexture = AvatarTextureBaker.bake(primaryColor, secondaryColor, detailColor);
+            preferredMaterial = new THREE.MeshStandardMaterial({color: 0xffffff, map: bakedTexture});
+        } else {
+            // Set simple primary color
+            preferredMaterial = new THREE.MeshStandardMaterial({color: primaryColor, map: null});
+        }
 
         obj.traverse(function (childObj) {
             if (childObj instanceof THREE.Mesh) {
-                // TODO Tweak material
-                childObj.material.color.set(primaryColor);
+                // childObj.material.color.set(primaryColor);
+                // console.log(childObj);
 
                 if (childObj.name === "FacialHair") {
                     // Baked-in beard removal from avatar head
                     childObj.visible = false;
                 }
+
+                childObj.material = preferredMaterial;
             }
         });
     }
