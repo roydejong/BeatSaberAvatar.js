@@ -37,10 +37,54 @@
             align-items: center;
             justify-content: center;
         }
+        #control-panel {
+            background: #fff;
+            border: 1px solid rgba(0, 0, 0, .1);
+            box-shadow: 0 0 3px 3px rgba(0, 0, 0, .1);
+            position: fixed;
+            top: 25px;
+            right: 25px;
+            padding: 10px;
+            color: #000;
+            display: flex;
+            align-items: center;
+            z-index: 9999;
+            font-size: 14px;
+        }
+        #control-panel div {
+            margin-right: 10px;
+        }
+        #control-panel button {
+            background: rgb(200, 80, 192);
+            color: #fff;
+            border-radius: 4px;
+            border: 1px solid rgba(0, 0, 0, .1);
+            padding: 6px 10px;
+            font-weight: bold;
+        }
+        #control-panel button:hover {
+            box-shadow: inset 999px 999px rgba(255, 255, 255, .1);
+        }
+        #control-panel button:active {
+            box-shadow: inset 999px 999px rgba(0, 0, 0, .1);
+        }
     </style>
 </head>
 <body>
 <div id="render-target">Loading...</div>
+<div id="control-panel">
+    <div>
+        <input type="checkbox" id="check-glasses"/>
+        <label for="check-glasses">Enable glasses</label>
+    </div>
+    <div>
+        <input type="checkbox" id="check-facial-hair"/>
+        <label for="check-facial-hair">Enable facial hair</label>
+    </div>
+    <div>
+        <button type="button" id="btn-randomize">🎲 Randomize</button>
+    </div>
+</div>
 <script src="dist/BeatSaberAvatar.js" async defer></script>
 <script>
     window.addEventListener('load', function () {
@@ -50,14 +94,17 @@
             assetsBaseDir: "assets/",
             enableControls: true,
             rotateAnimation: true,
-            enableGlasses: false,
-            enableFacialHair: false
+            enableGlasses: document.getElementById('check-glasses').checked,
+            enableFacialHair: document.getElementById('check-facial-hair').checked
         });
 
-        window.setInterval(() => {
-            // Randomize avatar
+        document.getElementById('btn-randomize').addEventListener('click', (e) => {
+            e.preventDefault();
+            renderer.options.enableGlasses = document.getElementById('check-glasses').checked;
+            renderer.options.enableFacialHair = document.getElementById('check-facial-hair').checked;
             renderer.setRandomAvatar();
-        }, 1500);
+            return false;
+        });
     });
 </script>
 </body>
