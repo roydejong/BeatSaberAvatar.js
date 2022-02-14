@@ -1,10 +1,12 @@
 # BeatSaberAvatar.js
 
-**3D web viewer for Beat Saber Multiplayer avatars (Three.js / WebGL).**
+**3D web viewer for Beat Saber multiplayer avatars (Three.js / WebGL).**
 
-**[👀 Demo Page](https://roydejong.github.io/BeatSaberAvatar.js/demo.html)**
+👀 **[Check out the Demo page](https://roydejong.github.io/BeatSaberAvatar.js/demo.html)**
 
-![Sample render](https://user-images.githubusercontent.com/6772638/153731427-7627af23-d68b-451f-9d06-6944ab2d2031.png)
+<a href="https://roydejong.github.io/BeatSaberAvatar.js/demo.html">
+    <img src="https://user-images.githubusercontent.com/6772638/153788471-e9bfd46d-40ec-4af8-8a41-80241b9a1a7e.png" alt="BeatSaberAvatar.js"/>
+</a>
 
 ## Installation
 
