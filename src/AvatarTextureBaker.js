@@ -7,8 +7,8 @@ export default class AvatarTextureBaker {
         if (!detailColor)
             detailColor = secondaryColor;
 
-        const width = 16;
-        const height = 16;
+        const width = 11;
+        const height = 11;
 
         const pixelCount = width * height;
         const data = new Uint8Array(4 * pixelCount);
@@ -17,14 +17,13 @@ export default class AvatarTextureBaker {
             for (let x = 0; x < width; x++) {
                 const pixelIndex = ((y * width) + x) * 4;
 
-                let targetColor = detailColor;
-
-                if (y >= 1) {
-                    if (x <= 1)
-                        targetColor = primaryColor;
-                    else if (x <= 3)
-                        targetColor = secondaryColor;
-                }
+                let targetColor;
+                if (x === 0)
+                    targetColor = primaryColor;
+                else if (x === 1)
+                    targetColor = secondaryColor;
+                else
+                    targetColor = detailColor;
 
                 const r = Math.floor(targetColor.r * 255);
                 const g = Math.floor(targetColor.g * 255);

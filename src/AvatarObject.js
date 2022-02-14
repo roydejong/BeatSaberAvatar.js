@@ -61,7 +61,21 @@ export default class AvatarObject {
         }
     }
 
-    load(loadingManager, assetsBaseDir) {
+    load(loadingManager, assetsBaseDir, debugUv = false) {
+        if (debugUv) {
+            this.debugUv = true;
+            if (!this.debugUvTexture) {
+                const textureLoader = new THREE.TextureLoader(loadingManager);
+                textureLoader.load(assetsBaseDir + "uvcheck.png", (texture) => {
+                    this.debugUvTexture = texture;
+                    this.load(loadingManager, assetsBaseDir, true);
+                });
+                return;
+            }
+        } else {
+            this.debugUv = false;
+        }
+
         this.handlePartLoaded("headMesh", null);
         this.handlePartLoaded("headTopMesh", null);
         this.handlePartLoaded("eyes", null);
@@ -173,7 +187,8 @@ export default class AvatarObject {
         let preferredMaterial = null;
         if (needsBake) {
             // Bake texture for UV wrapping with multi colors
-            const bakedTexture = AvatarTextureBaker.bake(primaryColor, secondaryColor, detailColor);
+            const bakedTexture = (this.debugUv && this.debugUvTexture) ||
+                AvatarTextureBaker.bake(primaryColor, secondaryColor, detailColor);
             preferredMaterial = new THREE.MeshStandardMaterial({color: 0xffffff, map: bakedTexture});
         } else {
             // Set simple primary color
@@ -182,14 +197,11 @@ export default class AvatarObject {
 
         obj.traverse(function (childObj) {
             if (childObj instanceof THREE.Mesh) {
-                // childObj.material.color.set(primaryColor);
-                // console.log(childObj);
-
                 if (childObj.name === "FacialHair") {
                     // Baked-in beard removal from avatar head
                     childObj.visible = false;
+                    return;
                 }
-
                 childObj.material = preferredMaterial;
             }
         });
