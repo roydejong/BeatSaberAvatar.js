@@ -87,10 +87,18 @@ export default class AvatarPartsModel {
     }
 
     static registerEyes() {
-        for (let i = 1; i <= 11; i++) {
-            const eyesId = `Eyes${i}`;
-            this.eyes[eyesId] = new AvatarEyes(eyesId);
-        }
+        // so the eyeIds do NOT line up with their sprite names...
+        this.eyes["Eyes1"] = new AvatarEyes("Eyes1", "Eyes/Eyes3.png");
+        this.eyes["Eyes2"] = new AvatarEyes("Eyes2", "Eyes/Eyes1.png");
+        this.eyes["Eyes3"] = new AvatarEyes("Eyes3", "Eyes/Eyes7.png");
+        this.eyes["Eyes4"] = new AvatarEyes("Eyes4", "Eyes/Eyes8.png");
+        this.eyes["Eyes5"] = new AvatarEyes("Eyes5", "Eyes/Eyes11.png");
+        this.eyes["Eyes6"] = new AvatarEyes("Eyes6", "Eyes/Eyes10.png");
+        this.eyes["Eyes7"] = new AvatarEyes("Eyes7", "Eyes/Eyes2.png");
+        this.eyes["Eyes8"] = new AvatarEyes("Eyes8", "Eyes/Eyes5.png");
+        this.eyes["Eyes9"] = new AvatarEyes("Eyes9", "Eyes/Eyes6.png");
+        this.eyes["Eyes10"] = new AvatarEyes("Eyes10", "Eyes/Eyes9.png");
+        this.eyes["Eyes11"] = new AvatarEyes("Eyes11", "Eyes/Eyes4.png");
     }
 
     static registerHands() {

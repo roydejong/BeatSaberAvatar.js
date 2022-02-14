@@ -1,9 +1,9 @@
 import * as THREE from 'three';
 
 export default class AvatarEyes {
-    constructor(id) {
+    constructor(id, texturePath) {
         this.id = id;
-        this.texturePath = `Eyes/${id}.png`
+        this.texturePath = texturePath;
     }
 
     load(loadingManager, assetsBaseDir, callback) {
