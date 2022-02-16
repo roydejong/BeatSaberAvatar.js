@@ -68,11 +68,19 @@
         #control-panel button:active {
             box-shadow: inset 999px 999px rgba(0, 0, 0, .1);
         }
+        .-sep-after {
+            padding-right: 10px;
+            border-right: 1px solid #ccc;
+        }
     </style>
 </head>
 <body>
 <div id="render-target">Loading...</div>
 <div id="control-panel">
+    <div class="-sep-after">
+        <input type="checkbox" id="check-animate" checked/>
+        <label for="check-animate">Animate</label>
+    </div>
     <div>
         <input type="checkbox" id="check-glasses"/>
         <label for="check-glasses">Enable glasses</label>
@@ -93,7 +101,7 @@
         const renderer = BeatSaberAvatar.setup(renderTarget, null, {
             assetsBaseDir: "assets/",
             enableControls: true,
-            rotateAnimation: true,
+            rotateAnimation: document.getElementById('check-animate').checked,
             enableGlasses: document.getElementById('check-glasses').checked,
             enableFacialHair: document.getElementById('check-facial-hair').checked
         });
@@ -103,6 +111,12 @@
             renderer.options.enableGlasses = document.getElementById('check-glasses').checked;
             renderer.options.enableFacialHair = document.getElementById('check-facial-hair').checked;
             renderer.setRandomAvatar();
+            return false;
+        });
+
+        document.getElementById('check-animate').addEventListener('change', (e) => {
+            e.preventDefault();
+            renderer.options.rotateAnimation = document.getElementById('check-animate').checked;
             return false;
         });
     });
