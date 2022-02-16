@@ -1,6 +1,6 @@
 {
   "name": "beatsaberavatar.js",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Beat Saber Multiplayer Avatar Renderer",
   "main": "src/index.js",
   "license": "MIT",
