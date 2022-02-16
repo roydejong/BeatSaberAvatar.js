@@ -1,5 +1,9 @@
 export default class AvatarData {
     constructor() {
+        /**
+         * A custom skin color, overrides normally available skin color choices. This is not possible in game.
+         */
+        this.skinColorOverride = null;
         this.skinColorId = null;
 
         this.headTopId = null;

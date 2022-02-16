@@ -17,10 +17,14 @@ export default class AvatarObject {
     setAvatarData(avatarData, enableGlasses = false, enableFacialHair = false) {
         this.avatarData = avatarData;
 
-        /**
-         * @type {AvatarColor}
-         */
-        this.skinColor = AvatarPartsModel.tryGetPart("skinColors", avatarData?.skinColorId);
+        if (avatarData?.skinColorOverride) {
+            this.skinColor = new AvatarColor("customSkinColor", avatarData?.skinColorOverride);
+        } else {
+            /**
+             * @type {AvatarColor}
+             */
+            this.skinColor = AvatarPartsModel.tryGetPart("skinColors", avatarData?.skinColorId);
+        }
 
         this.headTopMesh = AvatarPartsModel.tryGetPart("headTops", avatarData?.headTopId);
         this.headTopPrimaryColor = new AvatarColor("headTopPrimaryColor", avatarData?.headTopPrimaryColor
