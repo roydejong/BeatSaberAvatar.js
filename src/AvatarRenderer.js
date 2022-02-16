@@ -1,6 +1,6 @@
 import * as THREE from 'three';
 import AvatarObject from "./AvatarObject";
-import {TrackballControls} from 'three/examples/jsm/controls/TrackballControls.js';
+import {OrbitControls} from 'three/examples/jsm/controls/OrbitControls.js';
 
 const lightDebugOn = false;
 
@@ -39,9 +39,13 @@ export default class AvatarRenderer {
 
         // Set up mouse/keyboard controls
         if (this.options.enableControls) {
-            this.controls = new TrackballControls(this.camera, this.renderer.domElement);
-            this.controls.rotateSpeed = 10;
-            this.controls.noPan = true;
+            this.controls = new OrbitControls(this.camera, this.renderer.domElement);
+            this.controls.minDistance = .5;
+            this.controls.maxDistance = 8;
+            this.controls.zoomSpeed = 2;
+            this.controls.rotateSpeed = 3;
+            this.controls.enablePan = false;
+            this.controls.enableDamping = true;
             this.controls.target.set(0, 0, 0);
         }
 
