@@ -57,7 +57,7 @@ export default class AvatarPartsModel {
         }
 
         const collection = this[collectionName];
-        const keys = Object.keys(collection);
+        const keys = Object.keys(collection).filter(key => key !== "QuestionMark");
         return collection[keys[keys.length * Math.random() << 0]];
     }
 
@@ -99,6 +99,8 @@ export default class AvatarPartsModel {
         this.eyes["Eyes9"] = new AvatarEyes("Eyes9", "Eyes/Eyes6.png");
         this.eyes["Eyes10"] = new AvatarEyes("Eyes10", "Eyes/Eyes9.png");
         this.eyes["Eyes11"] = new AvatarEyes("Eyes11", "Eyes/Eyes4.png");
+        // Extra additions
+        this.eyes["QuestionMark"] = new AvatarEyes("QuestionMark", "Eyes/QuestionMark.png");
     }
 
     static registerHands() {
