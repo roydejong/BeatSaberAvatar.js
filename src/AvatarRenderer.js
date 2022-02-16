@@ -30,8 +30,8 @@ export default class AvatarRenderer {
         this.renderer.shadowMap.type = THREE.PCFSoftShadowMap;
 
         // Create camera
-        window.addEventListener( 'resize', this._updateCamera.bind(this), false);
-        this._updateCamera();
+        window.addEventListener( 'resize', this._initCamera.bind(this), false);
+        this._initCamera();
 
         // Add renderer to DOM, replacing its contents
         domElement.innerHTML = "";
@@ -58,7 +58,7 @@ export default class AvatarRenderer {
         this._renderLoop();
     }
 
-    _updateCamera() {
+    _initCamera() {
         const aspectRatio = this.domElement.clientWidth / this.domElement.clientHeight;
 
         if (!this.camera) {
@@ -67,7 +67,7 @@ export default class AvatarRenderer {
             this.camera.aspect = aspectRatio;
         }
 
-        this.camera.position.set(0, 0, 1.5);
+        this.camera.position.set(0, 0, this.options.initialZoomLevel);
         this.camera.rotation.set(0, 0, 0);
 
         if (this.renderer) {
@@ -162,5 +162,6 @@ AvatarRenderer.defaultOptions = {
     rotateAnimation: true,
     enableGlasses: false,
     enableFacialHair: false,
-    debugUv: false
+    debugUv: false,
+    initialZoomLevel: 1.5
 };

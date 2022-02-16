@@ -63,12 +63,25 @@ You can pass this as the second argument of the `setup()` call, or later by call
 instance.
 
 ```js
-let avatarData = new BeatSaberAvatarData();
-avatarData.headTopId = "OnFire";
-avatarData.handsId = "BareHands";
-avatarData.clothesId = "Hoodie";
-avatarData.skinColorId = "Default";
-avatarData.eyesId = "Eyes6";
+// Example of complete avatar data
+let avatarData = {
+    "headTopId": "OnFire",
+    "headTopPrimaryColor": "#a7966dff",
+    "headTopSecondaryColor": "#900277ff",
+    "glassesId": "Glasses01",
+    "glassesColor": "#a7796dff",
+    "facialHairId": "Moustache02",
+    "facialHairColor": "#a7796dff",
+    "handsId": "BareHands",
+    "handsColor": "#a7796dff",
+    "clothesId": "Hoodie",
+    "clothesPrimaryColor": "#cf3384ff",
+    "clothesSecondaryColor": "#4b2da5ff",
+    "clothesDetailColor": "#000000ff",
+    "skinColorId": "Default",
+    "eyesId": "Eyes6",
+    "mouthId": "Mouth12"
+};
 
 let instance = BeatSaberAvatar.setup(renderTarget, avatarData);
 
@@ -93,13 +106,14 @@ BeatSaberAvatar.setup(renderTarget, avatarData, options);
 
 Here's an overview of the supported options:
 
-| Key                | Default   | Description                                                    |
-|--------------------|-----------|----------------------------------------------------------------|
-| `assetsBaseDir`    | `assets/` | Base directory from which model and texture assets are loaded. |
-| `enableControls`   | `true`    | Enable mouse / keyboard controls for the camera.               |
-| `rotateAnimation`  | `true`    | If true, the avatar will slowly rotate from side to side.      |
-| `enableGlasses`    | `false`   | If true, render glasses from avatar data (unused assets).      |
-| `enableFacialHair` | `false`   | If true, render facial hair from avatar data (unused assets).  |
+| Key                 | Default   | Description                                                    |
+|---------------------|-----------|----------------------------------------------------------------|
+| `assetsBaseDir`     | `assets/` | Base directory from which model and texture assets are loaded. |
+| `enableControls`    | `true`    | Enable orbit camera controls.                                  |
+| `rotateAnimation`   | `true`    | If true, the avatar will slowly rotate from side to side.      |
+| `enableGlasses`     | `false`   | If true, render glasses from avatar data (unused assets).      |
+| `enableFacialHair`  | `false`   | If true, render facial hair from avatar data (unused assets).  |
+| `initialZoomLevel`  | `1.5`     | Sets the initial zoom level of the camera (z-depth).           | 
 
 ## License
 
