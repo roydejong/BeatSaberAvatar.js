@@ -77,7 +77,7 @@ export default class AvatarPartsModel {
     static registerHeadTops() {
         const headTopIds = ["BedHead", "Bob", "DoubleTrouble", "Emo", "HalfShaved", "Heartbreak", "Hippie", "LongBangs",
             "Loose", "Magician", "Nanny", "Normie", "OnFire", "PoloCap", "Ponytail", "Punk", "Scifi", "Sultan",
-            "SweatBand", "Untidy", "WetHair", "WindSwept", "WinterHat", "Wizard"];
+            "SweatBand", "Untidy", "WetHair", "Windswept", "WinterHat", "Wizard"];
 
         headTopIds.forEach(headTopId => {
             this.headTops[headTopId] = new AvatarPartMesh(headTopId, `HeadTop/${headTopId}_01.obj`);
