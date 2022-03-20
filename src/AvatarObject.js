@@ -14,7 +14,7 @@ export default class AvatarObject {
         this.headMesh = new AvatarPartMesh("head", "AvatarHead.obj");
     }
 
-    setAvatarData(avatarData, enableGlasses = false, enableFacialHair = false) {
+    setAvatarData(avatarData, enableGlasses = false, enableFacialHair = false, allowRandomize = false) {
         this.avatarData = avatarData;
 
         if (avatarData?.skinColorOverride) {
@@ -23,42 +23,42 @@ export default class AvatarObject {
             /**
              * @type {AvatarColor}
              */
-            this.skinColor = AvatarPartsModel.tryGetPart("skinColors", avatarData?.skinColorId);
+            this.skinColor = AvatarPartsModel.tryGetPart("skinColors", avatarData?.skinColorId, allowRandomize);
         }
 
-        this.headTopMesh = AvatarPartsModel.tryGetPart("headTops", avatarData?.headTopId);
+        this.headTopMesh = AvatarPartsModel.tryGetPart("headTops", avatarData?.headTopId, allowRandomize);
         this.headTopPrimaryColor = new AvatarColor("headTopPrimaryColor", avatarData?.headTopPrimaryColor
-            || AvatarColor.getRandomColorValue());
+          || AvatarColor.getRandomColorValue());
         this.headTopSecondaryColor = new AvatarColor("headTopSecondaryColor", avatarData?.headTopSecondaryColor
-            || AvatarColor.getRandomColorValue());
+          || AvatarColor.getRandomColorValue());
 
-        this.eyes = AvatarPartsModel.tryGetPart("eyes", avatarData?.eyesId);
+        this.eyes = AvatarPartsModel.tryGetPart("eyes", avatarData?.eyesId, allowRandomize);
 
-        this.handsMesh = AvatarPartsModel.tryGetPart("hands", avatarData?.handsId);
+        this.handsMesh = AvatarPartsModel.tryGetPart("hands", avatarData?.handsId, allowRandomize);
         this.handsColor = new AvatarColor("handsColor", avatarData?.handsColor
-            || AvatarColor.getRandomColorValue());
+          || AvatarColor.getRandomColorValue());
 
-        this.clothesMesh = AvatarPartsModel.tryGetPart("clothes", avatarData?.clothesId);
+        this.clothesMesh = AvatarPartsModel.tryGetPart("clothes", avatarData?.clothesId, allowRandomize);
         this.clothesPrimaryColor = new AvatarColor("clothesPrimaryColor", avatarData?.clothesPrimaryColor
-            || AvatarColor.getRandomColorValue());
+          || AvatarColor.getRandomColorValue());
         this.clothesSecondaryColor = new AvatarColor("clothesSecondaryColor", avatarData?.clothesSecondaryColor
-            || AvatarColor.getRandomColorValue());
+          || AvatarColor.getRandomColorValue());
         this.clothesDetailColor = new AvatarColor("clothesDetailColor", avatarData?.clothesDetailColor
-            || AvatarColor.getRandomColorValue());
+          || AvatarColor.getRandomColorValue());
 
         if (enableGlasses) {
-            this.glassesMesh = AvatarPartsModel.tryGetPart("glasses", avatarData?.glassesId);
+            this.glassesMesh = AvatarPartsModel.tryGetPart("glasses", avatarData?.glassesId, allowRandomize);
             this.glassesColor = new AvatarColor("glassesColor", avatarData?.glassesColor
-                || AvatarColor.getRandomColorValue());
+              || AvatarColor.getRandomColorValue());
         } else {
             this.glassesMesh = null;
             this.glassesColor = null;
         }
 
         if (enableFacialHair) {
-            this.facialHairMesh = AvatarPartsModel.tryGetPart("facialHair", avatarData?.facialHairId);
+            this.facialHairMesh = AvatarPartsModel.tryGetPart("facialHair", avatarData?.facialHairId, allowRandomize);
             this.facialHairColor = new AvatarColor("facialHairColor", avatarData?.facialHairColor
-                || AvatarColor.getRandomColorValue());
+              || AvatarColor.getRandomColorValue());
         } else {
             this.facialHairMesh = null;
             this.facialHairColor = null;

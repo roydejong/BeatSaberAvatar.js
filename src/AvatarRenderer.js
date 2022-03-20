@@ -151,7 +151,8 @@ export default class AvatarRenderer {
             this.scene.add(this.avatarObject.sceneGroup);
         }
 
-        this.avatarObject.setAvatarData(avatarData, this.options.enableGlasses, this.options.enableFacialHair);
+        this.avatarObject.setAvatarData(avatarData, this.options.enableGlasses, this.options.enableFacialHair,
+          this.options.allowRandomize);
         this.avatarObject.load(THREE.DefaultLoadingManager, this.options.assetsBaseDir, this.options.debugUv);
     }
 }
@@ -160,6 +161,7 @@ AvatarRenderer.defaultOptions = {
     assetsBaseDir: "assets/",
     enableControls: true,
     rotateAnimation: true,
+    allowRandomize: true,
     enableGlasses: false,
     enableFacialHair: false,
     debugUv: false,

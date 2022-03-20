@@ -106,14 +106,15 @@ BeatSaberAvatar.setup(renderTarget, avatarData, options);
 
 Here's an overview of the supported options:
 
-| Key                 | Default   | Description                                                    |
-|---------------------|-----------|----------------------------------------------------------------|
-| `assetsBaseDir`     | `assets/` | Base directory from which model and texture assets are loaded. |
-| `enableControls`    | `true`    | Enable orbit camera controls.                                  |
-| `rotateAnimation`   | `true`    | If true, the avatar will slowly rotate from side to side.      |
-| `enableGlasses`     | `false`   | If true, render glasses from avatar data (unused assets).      |
-| `enableFacialHair`  | `false`   | If true, render facial hair from avatar data (unused assets).  |
-| `initialZoomLevel`  | `1.5`     | Sets the initial zoom level of the camera (z-depth).           | 
+| Key                | Default    | Description                                                                                                     |
+|--------------------|------------|-----------------------------------------------------------------------------------------------------------------|
+| `assetsBaseDir`    | `assets/`  | Base directory from which model and texture assets are loaded.                                                  |
+| `enableControls`   | `true`     | Enable orbit camera controls.                                                                                   |
+| `rotateAnimation`  | `true`     | If true, the avatar will slowly rotate from side to side.                                                       |
+| `allowRandomize`   | `true`     | If true, missing or invalid parts will be randomized. If false, missing or invalid parts will not be rendered.  | 
+| `enableGlasses`    | `false`    | If true, render glasses from avatar data (unused assets).                                                       |
+| `enableFacialHair` | `false`    | If true, render facial hair from avatar data (unused assets).                                                   |
+| `initialZoomLevel` | `1.5`      | Sets the initial zoom level of the camera (z-depth).                                                            | 
 
 ## License
 

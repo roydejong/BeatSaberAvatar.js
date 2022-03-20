@@ -31,7 +31,7 @@ export default class AvatarPartsModel {
         this.didInit = true;
     }
 
-    static tryGetPart(collectionName, preferredPart = null) {
+    static tryGetPart(collectionName, preferredPart = null, allowRandomize = false) {
         if (typeof this[collectionName] !== "object") {
             throw new Error(`Invalid collection name: ${collectionName}`);
         }
@@ -48,7 +48,11 @@ export default class AvatarPartsModel {
             console.warn('[AvatarPartsModel]', 'Part not found:', collectionName, preferredPart);
         }
 
-        return this.getRandomPart(collectionName);
+        if (allowRandomize) {
+            return this.getRandomPart(collectionName);
+        }
+
+        return null;
     }
 
     static getRandomPart(collectionName) {
